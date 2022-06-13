@@ -26,5 +26,12 @@ if [ $? != 0 ]; then
     echo -e "[\033[0;31mERROR\033[0m]: Nginx start failed"
     exit 1
 fi
+
+sudo gunicorn -b '0.0.0.0:8080' hello &
+if [ $? != 0 ]; then
+    echo -e "[\033[0;31mERROR\033[0m]: Gunicorn start failed"
+    exit 1
+fi
+
 echo -e "[\033[0;32mOK\033[0m]"
 exit 0
