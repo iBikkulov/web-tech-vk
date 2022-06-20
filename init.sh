@@ -10,28 +10,34 @@ if [ "$(basename $CUR_DIR)" != "$PROJECT_NAME" ]; then
     exit 1
 fi
 
-if [ -f /etc/nginx/sites-enabled/test.conf ]; then
-    sudo rm -f /etc/nginx/sites-enabled/test.conf
-fi
-sudo ln -s $CUR_DIR/etc/nginx.conf /etc/nginx/sites-enabled/test.conf
+echo -n "Setup nginx configuration files... "
+sudo cp -f etc/nginx.conf /etc/nginx/sites-available/
+sudo ln -sf /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/nginx.conf
+sudo rm -f /etc/nginx/sites-enabled/default
+echo -e "[\033[0;32mOK\033[0m]"
 
-sudo nginx -t
+echo -n "Test nginx configuration files... "
+sudo nginx -t > /dev/null 2>&1
 if [ $? != 0 ]; then
-    echo -e "[\033[0;31mERROR\033[0m]: Conf test failed"
+    echo -e "[\033[0;31mERROR\033[0m]: Check your configuration files."
+    sudo rm -f /etc/nginx/sites-available/nginx.conf
+    sudo rm -f /etc/nginx/sites-enabled/nginx.conf 
     exit 1
 fi
+echo -e "[\033[0;32mOK\033[0m]"
 
-sudo /etc/init.d/nginx restart
+echo -n "Setup gunicorn... "
+sudo cp -f etc/gunicorn.service /etc/systemd/system/
+sudo cp -f etc/gunicorn.socket /etc/systemd/system/
+sudo systemctl enable --now gunicorn.socket > /dev/null 2>&1
+echo -e "[\033[0;32mOK\033[0m]"
+
+echo -n "Start nginx... "
+sudo systemctl enable nginx.service > /dev/null 2>&1
+sudo systemctl start nginx > /dev/null 2>&1
 if [ $? != 0 ]; then
-    echo -e "[\033[0;31mERROR\033[0m]: Nginx start failed"
+    echo -e "[\033[0;31mERROR\033[0m]"
     exit 1
 fi
-
-sudo gunicorn -b '0.0.0.0:8080' hello &
-if [ $? != 0 ]; then
-    echo -e "[\033[0;31mERROR\033[0m]: Gunicorn start failed"
-    exit 1
-fi
-
 echo -e "[\033[0;32mOK\033[0m]"
 exit 0
