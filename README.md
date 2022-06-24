@@ -4,81 +4,77 @@
 ## Table of Contents
 * [General Info](#general-information)
 * [Technologies Used](#technologies-used)
-* [Features](#features)
-* [Screenshots](#screenshots)
 * [Setup](#setup)
-* [Usage](#usage)
-* [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
 * [Acknowledgements](#acknowledgements)
 * [Contact](#contact)
 <!-- * [License](#license) -->
 
 
 ## General Information
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
+- The project is a service for answering questions. The user of the service has the opportunity to register, ask a question, answer questions from other users. The user can also mark questions with the help of the "like" button, changing their rating
 
+- The goal of the project is to gain practical skills in web backend development
+
+- Since outdated versions are used for some of the technologies, the development of the project imitates work with legacy code well
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
-- Tech 3 - version 3.0
-
-
-## Features
-List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
-
-
-## Screenshots
-![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
-
+- Python - version 3.4
+- Django - version 2.0
+- Gunicorn - version 20.1
+- Nginx - version 1.14
 
 ## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
+First of all you need to install some packages
+```
+sudo apt-get update
+sudo apt-get install nginx
+sudo apt-get install python3-venv
+sudo apt-get install supervisor
+```
+Then you need to `git clone` the repository **_exacly_** in a directory `/home/box/web`
+```
+sudo git clone https://github.com/iBikkulov/web-tech-vk.git /home/box/web
+```
+The project has the following directory layout
 
-Proceed to describe how to install / setup one's local environment / get started with the project.
+    .
+    ├── apps                        # Web applications directory
+    │   └── hello
+    │       ├── gunicorn_start.sh
+    │       ├── hello.py            # Application
+    │       └── requirements.txt
+    ├── conf                        # Configuration files and scripts
+    │   ├── hello_app
+    │   │   ├── supervisor.conf
+    │   │   └── supervisor_start.sh
+    │   └── nginx
+    │       ├── nginx.conf
+    │       └── nginx_start.sh
+    ├── public                      # Static files
+    ├── uploads                     # Upload files
+    ├── README.md
+    └── init.sh                     # Setup proxy and application servers
 
+Next you need to create a virtual environment for each of the applications and download all the requirements. Let's look at this step using the **_hello app_** as an example
+```
+cd /home/box/web/apps/hello
+python3 -m venv hello_env
+source hello_env/bin/activate
+pip install -r requirements.txt
+```
+**_Note:_** It's recommended to name a virtual environment directory according to the following convention: `<appname>_env` 
 
-## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
-
-`write-your-code-here`
-
-
-## Project Status
-Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why.
-
-
-## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
-
-Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
-
-To do:
-- Feature to be added 1
-- Feature to be added 2
-
+Now it's all set! To start applications run `init.sh`
+```
+cd /home/box/web
+sudo ./init.sh
+```
 
 ## Acknowledgements
-Give credit here.
-- This project was inspired by...
-- This project was based on [this tutorial](https://www.example.com).
-- Many thanks to...
-
+- This project was based on [this course](https://stepik.org/154).
 
 ## Contact
-Created by [@flynerdpl](https://www.flynerd.pl/) - feel free to contact me!
+Created by [@iBikkulov](https://www.linkedin.com/in/ilya-bikkulov-251306234/) - feel free to contact me!
 
 
 <!-- Optional -->
