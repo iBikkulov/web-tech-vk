@@ -4,10 +4,16 @@
 
 PROJECT_DIR=$(pwd)
 CONF_DIR="${PROJECT_DIR}/conf/hello_app"
+APP_DIR="${PROJECT_DIR}/apps/hello"
 SUPERVISOR_DIR="/etc/supervisor/conf.d/"
 
 cp -f $CONF_DIR/supervisor.conf $SUPERVISOR_DIR
 
-supervisorctl reread > /dev/null 2>&1
+if [ ! -e $APP_DIR/log/supervisor.log ]; then
+    mkdir -p $APP_DIR/log
+    touch $APP_DIR/log/supervisor.log
+fi
+
+supervisorctl reread >/dev/null 2>&1
 supervisorctl update > /dev/null 2>&1
 supervisorctl restart hello > /dev/null 2>&1

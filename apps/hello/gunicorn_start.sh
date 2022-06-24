@@ -1,6 +1,6 @@
 #! /bin/bash
 
-APP_DIR="/home/box/web/apps/hello_app"
+APP_DIR="/home/box/web/apps/hello"
 
 # Activate the virtual environment
 source $APP_DIR/hello_env/bin/activate
