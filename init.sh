@@ -18,4 +18,5 @@ if [ $? != 0 ]; then exit 1; fi
 
 # Run apps
 $PROJECT_DIR/conf/hello_app/supervisor_start.sh
+$PROJECT_DIR/conf/ask_app/supervisor_start.sh
 
