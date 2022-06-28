@@ -4,7 +4,7 @@
 
 PROJECT_DIR=$(pwd)
 CONF_DIR="${PROJECT_DIR}/conf/ask_app"
-APP_DIR="${PROJECT_DIR}/apps/ask"
+APP_DIR="${PROJECT_DIR}/ask"
 SUPERVISOR_DIR="/etc/supervisor/conf.d/"
 
 cp -f $CONF_DIR/supervisor_ask.conf $SUPERVISOR_DIR

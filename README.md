@@ -38,28 +38,29 @@ sudo git clone https://github.com/iBikkulov/web-tech-vk.git /home/box/web
 The project has the following directory layout
 
     .
-    ├── apps                        # Web applications directory
-    │   └── hello
-    │       ├── gunicorn_start.sh
-    │       ├── hello.py            # Application
-    │       └── requirements.txt
-    ├── conf                        # Configuration files and scripts
-    │   ├── hello_app
+    ├── ask/                        # Django project
+    │   ├── ask/                    # Project settings
+    │   ├── gunicorn_start.sh       # Application-server utility
+    │   ├── manage.py               # Django cmdline utility
+    │   ├── qa/                     # Django application
+    │   └── requirements.txt
+    ├── conf/                       # Configuration files and scripts
+    │   ├── ask_app/
     │   │   ├── supervisor.conf
     │   │   └── supervisor_start.sh
-    │   └── nginx
+    │   └── nginx/
     │       ├── nginx.conf
     │       └── nginx_start.sh
-    ├── public                      # Static files
-    ├── uploads                     # Upload files
+    ├── public/                     # Static files
+    ├── uploads/                    # Upload files
     ├── README.md
-    └── init.sh                     # Setup proxy and application servers
+    └── init.sh                     # Startup utility
 
-Next you need to create a virtual environment for each of the applications and download all the requirements. Let's look at this step using the **_hello app_** as an example
+Next you need to create a virtual environment for the application and download all requirements
 ```
-cd /home/box/web/apps/hello
-python3 -m venv hello_env
-source hello_env/bin/activate
+cd /home/box/web/ask
+python3 -m venv ask_env
+source ask_env/bin/activate
 pip install -r requirements.txt
 ```
 **_Note:_** It's recommended to name a virtual environment directory according to the following convention: `<appname>_env` 
