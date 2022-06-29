@@ -12,10 +12,11 @@ if [ "$(basename $PROJECT_DIR)" != "$PROJECT_NAME" ]; then
     exit 1
 fi
 
-# Run nginx
+
 $PROJECT_DIR/conf/nginx/nginx_start.sh
 if [ $? != 0 ]; then exit 1; fi
 
-# Run apps
+$PROJECT_DIR/conf/mysql/mysql_start.sh
+
 $PROJECT_DIR/conf/ask_app/supervisor_start.sh
 
