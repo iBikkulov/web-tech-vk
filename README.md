@@ -48,6 +48,8 @@ The project has the following directory layout
     │   ├── ask_app/
     │   │   ├── supervisor.conf
     │   │   └── supervisor_start.sh
+    │   ├── mysql/
+    │   │   └── mysql_start.sh
     │   └── nginx/
     │       ├── nginx.conf
     │       └── nginx_start.sh
