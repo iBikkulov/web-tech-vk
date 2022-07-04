@@ -71,10 +71,6 @@ cd /home/box/web
 sudo ./init.sh
 ```
 
-## TODO
-- Automate migrations (on start)
-- Add troubleshoot with supervisord
-
 ## Acknowledgements
 - This project was based on [this course](https://stepik.org/154).
 
