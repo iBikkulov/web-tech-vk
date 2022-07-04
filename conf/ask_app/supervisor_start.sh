@@ -14,7 +14,7 @@ if [ ! -e $APP_DIR/log/supervisor.log ]; then
     touch $APP_DIR/log/supervisor.log
 fi
 
-/usr/bin/supervisord -c $SUPERVISOR_DIR/supervisor.conf
+/usr/bin/supervisord -c $SUPERVISOR_DIR/supervisord.conf
 
 supervisorctl reread >/dev/null 2>&1
 supervisorctl update >/dev/null 2>&1
