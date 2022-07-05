@@ -18,11 +18,5 @@ from django.urls import include, path
 
 urlpatterns = [
     path('', include('qa.urls')),
-    path('login/', include('qa.urls')),
-    path('signup/', include('qa.urls')),
-    path('question/<int:question_id>', include('qa.urls')),
-    path('ask/', include('qa.urls')),
-    path('popular/', include('qa.urls')),
-    path('new/', include('qa.urls')),
     path('admin/', admin.site.urls),
 ]
