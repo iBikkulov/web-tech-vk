@@ -81,6 +81,9 @@ DATABASES = {
         'USER': 'box',
         'PASSWORD': '12345',
         'HOST': 'localhost',
+        'TEST': {
+            'NAME': 'test_ask',
+        }
     }
 }
 

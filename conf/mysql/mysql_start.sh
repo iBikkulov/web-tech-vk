@@ -21,9 +21,10 @@ fi
 if [[ ! "$USERS" =~ .*"box"[[:space:]]*"localhost".* ]]; then
         mysql -u root -e "CREATE USER 'box'@'localhost' IDENTIFIED BY '12345'; \
                 GRANT ALL PRIVILEGES ON ask.* TO 'box'@'localhost' WITH GRANT OPTION; \
+                GRANT ALL PRIVILEGES ON test_ask.* TO 'box'@'localhost'; \
                 FLUSH PRIVILEGES;" > /dev/null 2>&1
         if [ $? != 0 ]; then
-        echo -e "[\033[0;31mERROR\033[0m]: Cannot create a user."
+        echo -e "[\033[0;31mERROR\033[0m]: Cannot create user or grant privileges."
         exit 1
         fi
 fi
