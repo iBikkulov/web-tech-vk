@@ -13,7 +13,7 @@ def index(request):
     questions = Question.objects.new()
     paginator = Paginator(questions, 10)    # Show 10 questions per page
     page_num = request.GET.get('page')
-    page_obj = paginator.get_page(page_num)
+    questions = paginator.get_page(page_num)
     return render(request, 'qa/index.html', {'questions': questions})
 
 
