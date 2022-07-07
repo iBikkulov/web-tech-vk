@@ -1,14 +1,16 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.views.decorators.http import require_GET
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from .models import Question
+from .forms import AnswerForm
+
 
 def test(request, question_id=None):
     return HttpResponse('OK')
 
 
-@require_GET
 def index(request):
     questions = Question.objects.new()
     paginator = Paginator(questions, 10)    # Show 10 questions per page
@@ -17,7 +19,6 @@ def index(request):
     return render(request, 'qa/index.html', {'questions': questions})
 
 
-@require_GET
 def popular(request):
     questions = Question.objects.popular()
     paginator = Paginator(questions, 10)    # Show 10 questions per page
@@ -28,4 +29,14 @@ def popular(request):
 
 def question(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'qa/question.html', {'question': question})
+    if request.method == 'POST':
+        form = AnswerForm(request.POST, initial={'question': question.id})
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('question', args=(question.id,)))
+    else:
+        form = AnswerForm(initial={'question': question.id})
+    return render(request, 'qa/question.html', {
+        'question': question,
+        'form': form
+    })
