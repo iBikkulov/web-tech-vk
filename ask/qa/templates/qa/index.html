@@ -4,6 +4,9 @@
         <span class="questions-hot">
             <a href="{% url 'popular' %}">Hot Questions</a>
         </span>
+        <span class="new-question">
+            <a href="{% url 'ask' %}">ASK</a>
+        </span>
     </div>
 
     {% for question in questions %}

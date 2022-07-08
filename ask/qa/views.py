@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Question
-from .forms import AnswerForm
+from .forms import AnswerForm, AskForm
 
 
 def test(request, question_id=None):
@@ -40,3 +40,14 @@ def question(request, question_id):
         'question': question,
         'form': form
     })
+
+
+def ask(request):
+    if request.method == 'POST':
+        form = AskForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            return HttpResponseRedirect(reverse('question', args=(question.id,)))
+    else:
+        form = AskForm()
+    return render(request, 'qa/ask.html', {'form': form})
