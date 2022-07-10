@@ -13,8 +13,16 @@ def make_password_custom(password):
 
 
 class AnswerForm(forms.Form):
+    """From for adding a new answer."""
     text = forms.CharField(widget=forms.Textarea)
     question = forms.IntegerField(widget=forms.HiddenInput)
+
+    def clean(self):
+        try:
+            author = User.objects.get(username=self._user.username)
+        except User.DoesNotExist:
+            raise ValidationError('User not exist or unauthorized.')
+        self.cleaned_data['author'] = author
 
     def save(self):
         # We need a Question object to create an Answer object
@@ -24,8 +32,16 @@ class AnswerForm(forms.Form):
 
 
 class AskForm(forms.Form):
+    """Form for adding a new question."""
     title = forms.CharField(max_length=255)
     text = forms.CharField(widget=forms.Textarea)
+
+    def clean(self):
+        try:
+            author = User.objects.get(username=self._user.username)
+        except User.DoesNotExist:
+            raise ValidationError('User "%s" does not exist.' % _user.username)
+        self.cleaned_data['author'] = author
 
     def save(self):
         return Question.objects.create(**self.cleaned_data)
@@ -63,6 +79,8 @@ class SigninForm(forms.ModelForm):
     def clean(self):
         username = self.cleaned_data['username']
         password = self.cleaned_data['password']
+        # Note: doesn't work when the superuser logs in, because
+        # a different salt was used when creating his password.
         password = make_password_custom(password)
         try:
             # Note: with current MySQL settings collations are case insensitive,

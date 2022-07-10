@@ -3,13 +3,10 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 
 from .models import Question
 from .forms import AnswerForm, AskForm, SignupForm, SigninForm
-
-
-def test(request, question_id=None):
-    return HttpResponse('OK')
 
 
 def index(request):
@@ -29,9 +26,14 @@ def popular(request):
 
 
 def question(request, question_id):
+    """
+    Responsible for showing the page with answers to a question
+    and processing the form for adding answers.
+    """
     question = get_object_or_404(Question, pk=question_id)
     if request.method == 'POST':
         form = AnswerForm(request.POST, initial={'question': question.id})
+        form._user = request.user
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('question', args=(question.id,)))
@@ -43,9 +45,12 @@ def question(request, question_id):
     })
 
 
+@login_required(login_url='/login/')
 def ask(request):
+    """Responsible for processing the form for adding questions."""
     if request.method == 'POST':
         form = AskForm(request.POST)
+        form._user = request.user
         if form.is_valid():
             question = form.save()
             return HttpResponseRedirect(reverse('question', args=(question.id,)))
