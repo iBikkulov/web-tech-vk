@@ -2,10 +2,10 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 
 from .models import Question
-from .forms import AnswerForm, AskForm, SignupForm
+from .forms import AnswerForm, AskForm, SignupForm, SigninForm
 
 
 def test(request, question_id=None):
@@ -65,3 +65,19 @@ def signup(request):
     else:
         form = SignupForm()
     return render(request, 'qa/signup.html', {'form': form})
+
+
+def signin(request):
+    if request.method == 'POST':
+        form = SigninForm(request.POST)
+        if form.is_valid():
+            user = authenticate(
+                request,
+                username=request.POST['username'],
+                password=request.POST['password']
+            )
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = SigninForm()
+    return render(request, 'qa/signin.html', {'form': form})

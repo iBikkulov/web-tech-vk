@@ -7,6 +7,11 @@ from django.contrib.auth.hashers import make_password
 from .models import Question, Answer
 
 
+def make_password_custom(password):
+    """Customized make_password function."""
+    return make_password(password, salt='some salt')
+
+
 class AnswerForm(forms.Form):
     text = forms.CharField(widget=forms.Textarea)
     question = forms.IntegerField(widget=forms.HiddenInput)
@@ -27,22 +32,13 @@ class AskForm(forms.Form):
 
 
 class SignupForm(forms.ModelForm):
-
+    """Website signup form."""
     class Meta:
         model = User
-        fields = [
-            'username',
-            'email',
-            'password',
-        ]
+        fields = ['username', 'email', 'password']
         widgets = {
             'email':    forms.EmailInput(),
             'password': forms.PasswordInput()
-        }
-        labels = {
-            'username':     'Username',
-            'email':        'Email',
-            'password':     'Password',
         }
 
     def clean_username(self):
@@ -54,5 +50,24 @@ class SignupForm(forms.ModelForm):
     def clean_password(self):
         password = self.cleaned_data['password']
         validate_password(password)
-        make_password(password, salt='some salt')
-        return password
+        return make_password_custom(password)
+
+
+class SigninForm(forms.ModelForm):
+    """Website signup form."""
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+        widgets = {'password': forms.PasswordInput()}
+
+    def clean(self):
+        username = self.cleaned_data['username']
+        password = self.cleaned_data['password']
+        password = make_password_custom(password)
+        try:
+            # Note: with current MySQL settings collations are case insensitive,
+            # so for example 'asd' and 'Asd' are considered the same.
+            self.instance = User.objects.get(username=username, password=password)
+        except User.DoesNotExist:
+            raise ValidationError('Username or password is incorrect!')
+        return self.cleaned_data
