@@ -1,10 +1,11 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.views.decorators.http import require_GET
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth import login, logout
+
 from .models import Question
-from .forms import AnswerForm, AskForm
+from .forms import AnswerForm, AskForm, SignupForm
 
 
 def test(request, question_id=None):
@@ -51,3 +52,16 @@ def ask(request):
     else:
         form = AskForm()
     return render(request, 'qa/ask.html', {'form': form})
+
+
+def signup(request):
+    logout(request)
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        form = SignupForm()
+    return render(request, 'qa/signup.html', {'form': form})
