@@ -53,8 +53,6 @@ The project has the following directory layout
     │   └── nginx/
     │       ├── nginx.conf
     │       └── nginx_start.sh
-    ├── public/                     # Static files
-    ├── uploads/                    # Upload files
     ├── README.md
     └── init.sh                     # Startup utility
 
