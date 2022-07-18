@@ -12,11 +12,32 @@ def make_password_custom(password):
     return make_password(password, salt='some salt')
 
 
-class AnswerForm(forms.Form):
-    """From for adding a new answer."""
-    text = forms.CharField(widget=forms.Textarea)
-    question = forms.IntegerField(widget=forms.HiddenInput)
+# class AnswerForm(forms.Form):
+#     """From for adding a new answer."""
+#     text = forms.CharField(widget=forms.Textarea)
+#     question = forms.IntegerField(widget=forms.HiddenInput)
 
+#     def clean(self):
+#         try:
+#             author = User.objects.get(username=self._user.username)
+#         except User.DoesNotExist:
+#             raise ValidationError('User not exist or unauthorized.')
+#         self.cleaned_data['author'] = author
+
+#     def save(self):
+#         # We need a Question object to create an Answer object
+#         question = Question.objects.get(pk=self.cleaned_data['question'])
+#         self.cleaned_data['question'] = question
+#         return Answer.objects.create(**self.cleaned_data)
+
+class AnswerForm(forms.Form):
+    """Form for adding a new answer."""
+    text = forms.CharField(widget=forms.Textarea)
+
+    def __init__(self, *args, **kwargs):
+        self.question_id = kwargs.pop('question_id')
+        super(AnswerForm, self).__init__(*args, **kwargs)
+ 
     def clean(self):
         try:
             author = User.objects.get(username=self._user.username)
@@ -26,7 +47,7 @@ class AnswerForm(forms.Form):
 
     def save(self):
         # We need a Question object to create an Answer object
-        question = Question.objects.get(pk=self.cleaned_data['question'])
+        question = Question.objects.get(pk=self.question_id)
         self.cleaned_data['question'] = question
         return Answer.objects.create(**self.cleaned_data)
 

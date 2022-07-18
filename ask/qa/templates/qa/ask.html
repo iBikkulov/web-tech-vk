@@ -1,17 +1,45 @@
-{% for e in form.non_field_errors %}
-    <div class="alert alert-danger">{{ e }}</div>
-{% endfor %}
-<form class="form-horizontal" method="post" action="{% url 'ask' %}">
+{% extends 'qa/base.html' %}
+
+{% block content %}
+<!-- Main content -->
+<main class="container">
+  <!-- Header -->  
+  <p class="fs-5 text mt-3 mb-3">Your Question</p>
+  {% for error in form.non_field_errors %}
+      <div class="alert alert-danger">{{ error }}</div>
+  {% endfor %}
+
+  <!-- Question Form -->
+  <form method="post" action="{% url 'ask' %}">
     {% csrf_token %}
-    <fieldset>
-    {% for field in form %}
-        <div class="control group {% if field.errors %}has-error{% endif %}">
-            <label class="control-label">{{ field.label }}</label>
-            <div class="controls">{{ field }}</div>
-        </div>
-    {% endfor %}
-    </fieldset>
-    <div class="form-actions">
+    <div class="rounded-3 border shadow-sm p-3">
+      <fieldset>
+      {% for field in form %}
+        <label class="form-label mb-auto">{{ field.label }}</label>
+        <input class="form-control mb-1" type="{{ field.field.widget.input_type }}"
+          name="{{ field.name }}"
+        >
+      {% endfor %}
+      </fieldset>
+      <div class="mt-3 text-center">
         <button type="submit" class="btn btn-primary">Ask</button>
+      </div>
     </div>
-</form>
+  </form>
+
+  <!-- <form class="form" method="post" action="{% url 'ask' %}">
+      {% csrf_token %}
+      <fieldset>
+      {% for field in form %}
+          <div class="control group {% if field.errors %}has-error{% endif %}">
+              <label class="control-label">{{ field.label }}</label>
+              <div class="controls">{{ field }}</div>
+          </div>
+      {% endfor %}
+      </fieldset>
+      <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Ask</button>
+      </div>
+  </form> End of Question Form -->
+</main> <!-- End of Main Content -->
+{% endblock %}

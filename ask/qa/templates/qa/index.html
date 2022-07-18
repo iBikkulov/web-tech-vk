@@ -1,42 +1,65 @@
-<div class="questions">
-    <div class="question-header">
-        <span class="questions-new">New Questions</span>
-        <span class="questions-hot">
-            <a href="{% url 'popular' %}">Hot Questions</a>
-        </span>
-        <span class="new-question">
-            <a href="{% url 'ask' %}">ASK</a>
-        </span>
-        <span class="login">
-            <a href="{% url 'login' %}">Log in</a>
-        </span>
-        <span class="signup">
-            <a href="{% url 'signup' %}">Sign up</a>
-        </span>
-    </div>
+{% extends 'qa/base.html' %}
 
-    {% for question in questions %}
-    <div class="question">
-        <a href="{% url 'question' question.id %}">{{ question.title }}</a><br/>
-        <div class="question-text">{{ question.text }}</div>
-    </div>
-    {% endfor %}
-    
-    <div class="pagination">
-        <span class="step-links">
-            {% if questions.has_previous %}
-                <a href="?page=1">&laquo; First</a>
-                <a href="?page={{ questions.previous_page_number }}">Previous</a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ questions.number }} of {{ questions.paginator.num_pages }}
-            </span>
-    
-            {% if questions.has_next %}
-                <a href="?page={{ questions.next_page_number }}">Next</a>
-                <a href="?page={{ questions.paginator.num_pages }}">Last &raquo;</a>
-            {% endif %}
+{% block content %}
+<!-- Main Content -->
+<main class="container">
+  <!-- Main Header -->
+  <div class="m-2 mb-3">
+  {% block main_header %}
+    <span class="fs-3 text me-3">New Questions</span>
+    <a href="{% url 'popular' %}" class="text-decoration-none">Hot Questions</a>
+  {% endblock %}
+  </div>
+
+  <!-- Questions -->
+  {% for question in questions %}
+  <div class="rounded border border-1 p-2 mb-3">
+    <a href="{% url 'question' question.id %}" class="text-decoration-none fs-5 text">
+      {{ question.title }}
+    </a>
+    <div class="fs-6 text fw-light overflow-text">{{ question.text }}</div>
+  </div>
+  {% endfor %}
+  
+  <!-- Pagination -->
+  <nav>
+    <ul class="pagination">
+    {% if questions.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page=1">First</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ questions.previous_page_number }}">Previous</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">First</span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">Previous</span>
+      </li>
+    {% endif %}
+      <li class="page-item disabled">
+        <span class="page-link">
+          Page {{ questions.number }} of {{ questions.paginator.num_pages }}
         </span>
-    </div>    
-</div>
+      </li>
+    {% if questions.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ questions.next_page_number }}">Next</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ questions.paginator.num_pages }}">Last</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">Next</span>
+      </li>
+      <li class="page-item disabled">
+        <span class="page-link">Last</span>
+      </li>
+    {% endif %}
+    </ul>
+  </nav>
+</main> <!-- End of Main Content -->
+{% endblock %}

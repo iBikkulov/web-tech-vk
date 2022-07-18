@@ -1,20 +1,10 @@
-{% for e in form.non_field_errors %}
-    <div class="alert alert-danger">{{ e }}</div>
-{% endfor %}
-<form class="form-horizontal" method="post" action="{% url 'signup' %}">
-    {% csrf_token %}
-    <fieldset>
-    {% for field in form %}
-        <div class="control group {% if field.errors %}has-error{% endif %}">
-            <label class="control-label">{{ field.label }}</label>
-            <div class="controls">{{ field }}</div>
-            {% for error in field.errors %} 
-                <div class="alert alert-danger">{{ error|escape }}</div>
-            {% endfor %}
-        </div>
-    {% endfor %}
-    </fieldset>
-    <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-    </div>
-</form>
+{% extends 'qa/signin.html' %}
+
+{% block form_action %} action="{% url 'signup' %}" {% endblock %}
+
+{% block button_name %} Sign up {% endblock %}
+
+{% block additionals %}
+  Already have an account?
+  <a href="{% url 'login' %}" class="text-decoration-none">Log in</a>
+{% endblock %}

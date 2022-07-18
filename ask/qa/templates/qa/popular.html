@@ -1,33 +1,6 @@
-<div class="questions">
-    <div class="question-header">
-        <span class="questions-new">Hot Questions</span>
-        <span class="questions-hot">
-            <a href="{% url 'index' %}">New Questions</a>
-        </span>
-    </div>
+{% extends 'qa/index.html' %}
 
-    {% for question in questions %}
-    <div class="question">
-        <a href="{% url 'question' question.id %}">{{ question.title }}</a><br/>
-        <div class="question-text">{{ question.text }}</div>
-    </div>
-    {% endfor %}
-    
-    <div class="pagination">
-        <span class="step-links">
-            {% if questions.has_previous %}
-                <a href="?page=1">&laquo; First</a>
-                <a href="?page={{ questions.previous_page_number }}">Previous</a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ questions.number }} of {{ questions.paginator.num_pages }}
-            </span>
-    
-            {% if questions.has_next %}
-                <a href="?page={{ questions.next_page_number }}">Next</a>
-                <a href="?page={{ questions.paginator.num_pages }}">Last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>    
-</div>
+{% block main_header %}
+  <span class="fs-3 text me-3">Hot Questions</span>
+  <a href="{% url 'index' %}" class="text-decoration-none">New Questions</a>
+{% endblock %}
