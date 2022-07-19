@@ -13,11 +13,25 @@
 
   <!-- Questions -->
   {% for question in questions %}
-  <div class="rounded border border-1 p-2 mb-3">
-    <a href="{% url 'question' question.id %}" class="text-decoration-none fs-5 text">
-      {{ question.title }}
-    </a>
-    <div class="fs-6 text fw-light overflow-text">{{ question.text }}</div>
+  <div class="container rounded border border-1 p-2 mb-3">
+    <div class="row">
+      <div class="col-3 col-md-1 border-end">
+      </div>
+      <div class="col-9 col-md-11">
+        <a href="{% url 'question' question.id %}" class="text-decoration-none fs-5">
+          {{ question.title }}
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3 col-md-1 border-end">
+        <p class="mb-auto">{{ question.author }}</p>
+        <small class="fw-light">{{ question.added_at|date:"SHORT_DATE_FORMAT" }}</small>
+      </div>
+      <div class="col-9 col-md-11">
+        <div class="fs-6 text fw-light overflow-text">{{ question.text }}</div>
+      </div>
+    </div>
   </div>
   {% endfor %}
   
