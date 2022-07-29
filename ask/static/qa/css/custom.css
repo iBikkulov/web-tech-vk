@@ -1,0 +1,26 @@
+/* Customize buttons */
+.btn-primary {
+    background-color: #6cba86ab !important;
+    border-color: #6cba86 !important;
+}
+.btn-primary:hover {
+    background-color: #6cba86e4 !important;
+    border-color: #6cba86 !important;
+}
+.btn-secondary {
+    background-color: #6cba8613 !important;
+    border-color: #6cba86 !important;
+}
+.btn-secondary:hover {
+    background-color: #6cba863b !important;
+    border-color: #6cba86 !important;
+}
+
+/* Handle multiline text */
+.overflow-text {
+  display: -webkit-box;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;  
+}
