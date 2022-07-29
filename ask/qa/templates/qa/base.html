@@ -40,7 +40,7 @@
         <!-- Navigation items -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Left Navbar -->
-          <ul class="navbar-nav mb-2 mb-lg-0 ms-2">
+          <ul class="navbar-nav mb-lg-0 ms-lg-2">
             <li class="nav-item">
               <a href="{% url 'ask' %}" class="nav-link btn btn-primary">Ask Question</a>
             </li>
@@ -59,10 +59,10 @@
             </li>
             <span class="navbar-text me-5 pe-5">{{ user.get_username }}</span>
           {% else %}
-            <li class="nav-item me-2">
+            <li class="nav-item me-lg-2">
               <a href="{% url 'login' %}" class="nav-link btn btn-secondary">Log in</a>
             </li>
-            <li class="nav-item me-3">
+            <li class="nav-item me-lg-5">
               <a href="{% url 'signup' %}" class="nav-link btn btn-primary">Sign up</a>
             </li>
           {% endif %}
