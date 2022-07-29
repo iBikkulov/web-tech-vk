@@ -1,25 +1,39 @@
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from .models import Question
 from .forms import AnswerForm, AskForm, SignupForm, SigninForm
 
 
+QUESTIONS_PER_PAGE = 10
+
+
+def login_required_ajax(view):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return view(request, *args, **kwargs)
+        return JsonResponse({'code': 'no_auth'})
+    return wrapper
+
+
+@ensure_csrf_cookie
 def index(request):
     questions = Question.objects.new()
-    paginator = Paginator(questions, 3)    # Show 3 questions per page
+    paginator = Paginator(questions, QUESTIONS_PER_PAGE)
     page_num = request.GET.get('page')
     questions = paginator.get_page(page_num)
     return render(request, 'qa/index.html', {'questions': questions})
 
 
+@ensure_csrf_cookie
 def popular(request):
     questions = Question.objects.popular()
-    paginator = Paginator(questions, 3)    # Show 3 questions per page
+    paginator = Paginator(questions, QUESTIONS_PER_PAGE)
     page_num = request.GET.get('page')
     questions = paginator.get_page(page_num)
     return render(request, 'qa/popular.html', {'questions': questions})
@@ -91,3 +105,13 @@ def signin(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+
+@login_required_ajax
+def question_like(request):
+    """Responsible for processing likes on questions from users."""
+    if request.method == 'POST':
+        id = int(request.POST['question_id'])
+        question = get_object_or_404(Question, id=id)
+        rating = question.rate(request.user)
+        return JsonResponse({'rating': rating, 'code': 'ok'})

@@ -1,5 +1,4 @@
 from django.urls import path
-from django.contrib.auth.views import LoginView
 
 from . import views
 
@@ -11,4 +10,5 @@ urlpatterns = [
     path('ask/', views.ask, name='ask'),
     path('popular/', views.popular, name='popular'),
     path('logout/', views.logout_view, name='logout'),
+    path('question_like/', views.question_like, name='question_like')
 ]
